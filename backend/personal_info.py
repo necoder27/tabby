@@ -2,6 +2,7 @@ import geocoder
 import datetime as dt 
 from typing import Literal
 
+
 def get_greeting_based_on_daytime() -> str:
     current_hour = dt.datetime.now().hour
 
