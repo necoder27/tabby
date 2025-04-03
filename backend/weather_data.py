@@ -96,5 +96,5 @@ def get_weather_data() -> dict[str, Any]:
     response = requests.get(URL, params=params)
     filtered_data = filter_weather_data(response.json())
 
-    return filtered_data # response.json()
+    return filtered_data 
 
