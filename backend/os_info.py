@@ -1,4 +1,4 @@
-# macos version: sw_vers
+# macos version: sw_vers, system_profiler
 # uptime: uptime, sysctl kern.boottime
 # memory usage: memory_pressure, vm_stat
 # disk: df -h
@@ -7,18 +7,29 @@ import subprocess
 import re
 
 
-def get_macos_version_info():
-    output = subprocess.run(["sw_vers"], capture_output=True, text=True)
+SYS_PROFILER = ["system_profiler", "SPSoftwareDataType", "-detailLevel", "mini"]
 
-    return re.findall(r"\t\t(.+)\n", output.stdout)
+
+def get_macos_version_info():
+    output = subprocess.run(SYS_PROFILER, capture_output=True, text=True)
+    
+    filtered_output = re.findall(r"System\sVersion:\s(.+)\s\(", output.stdout)
+
+    return filtered_output[0]
 
 def get_uptime_info():
-    output = subprocess.run("uptime", capture_output=True, text=True)
+    output = subprocess.run(SYS_PROFILER, capture_output=True, text=True)
 
-    days = re.findall(r"up (.+) days", output.stdout)[0]
-    hours, minutes = re.findall(r"up.*?(\d+:\d{2})", output.stdout)[0].split(":")
+    filtered_output = re.findall(r"Time\ssince\sboot:\s(.+)", output.stdout)[0].split()
 
-    return f"{days}d {hours}h {int(minutes)}m"
+    formatted_output = ""
+    for i in range(len(filtered_output)):
+        if i % 2 == 0: 
+            formatted_output += str(int(filtered_output[i]))
+        else:
+            formatted_output += filtered_output[i][0] + " " 
+
+    return formatted_output.strip() 
 
 def get_memory_usage_info() -> str:
     ...
