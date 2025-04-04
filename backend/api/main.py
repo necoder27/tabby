@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from backend.os_info import get_macos_version_info, get_memory_usage_info, get_uptime_info
+from backend.os_info import get_disk_usage_info, get_macos_version_info, get_memory_usage_info, get_uptime_info
 from backend.personal_info import get_greeting_based_on_daytime, get_location_from_ip_address
 from backend.weather_data import WeatherResponse, get_weather_data
 from typing import Any
@@ -31,5 +31,9 @@ def get_uptime() -> str:
     return get_uptime_info()
 
 @api.get("/system/memory")
-def get_memory_usage():
+def get_memory_usage() -> str:
     return get_memory_usage_info()
+
+@api.get("/system/disk")
+def get_disk_usage() -> str:
+    return get_disk_usage_info()

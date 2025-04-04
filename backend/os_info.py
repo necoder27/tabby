@@ -1,11 +1,12 @@
 # macos version: sw_vers, system_profiler
 # uptime: uptime, sysctl kern.boottime
-# memory usage: memory_pressure, vm_stat
+# memory usage: memory_pressure, vm_stat, sysctl vm.page_pageable_internal_count 
 # disk: df -h
 # cpu usage: top
-# python library: psutil
+# python library: psutil -> will maybe start using this for memory usage 
 import subprocess
 import re
+import psutil
 
 
 SYS_PROFILER = ["system_profiler", "SPSoftwareDataType", "-detailLevel", "mini"]
@@ -32,18 +33,33 @@ def get_uptime_info() -> str:
 
     return formatted_output.strip() 
 
-def get_memory_usage_info():
+def get_memory_usage_info() -> str:
     page_size = int(subprocess.run("pagesize", capture_output=True, text=True).stdout)
     output = subprocess.run("memory_pressure", capture_output=True, text=True)
+    app_memory = int(subprocess.run(["sysctl", "-n", "vm.page_pageable_internal_count"], capture_output=True, text=True).stdout)
 
     total_pages = int(re.findall(r"\((\d+)\spages\swith", output.stdout)[0])
-    # used_pages: filters out active, speculative, wired down and compressed pages
-    used_pages = re.findall(r"Pages\sactive:\s(\d+)|Pages\sspeculative:\s(\d+)|Pages\swired\sdown:\s(\d+)|Pages\sused\sby\scompressor:\s(\d+)", output.stdout)
+
+    purgeable_pages = int(re.findall(r"Pages\spurgeable:\s(\d+)", output.stdout)[0])
+    app_memory -= purgeable_pages
+    wired_down_pages = int(re.findall(r"Pages\swired\sdown:\s(\d+)", output.stdout)[0])
+    used_by_compressor_pages = int(re.findall(r"Pages\sused\sby\scompressor:\s(\d+)", output.stdout)[0])
+
+    used_pages = app_memory + wired_down_pages + used_by_compressor_pages
+
+    total_memory = total_pages * page_size // (2**20)
+    used_memory = used_pages * page_size // (2**20)
+
+    formatted_output = f"{used_memory}MiB / {total_memory}MiB"
         
-    return used_pages
+    return formatted_output
 
 def get_disk_usage_info() -> str:
-    ...
+    output = psutil.disk_usage("/")
+
+    formatted_output = f"{(output[0] - output[2]) // 2**30}GiB / {output[0] // 2**30}GiB"
+
+    return formatted_output
 
 def get_cpu_usage_info() -> str:
     ...
