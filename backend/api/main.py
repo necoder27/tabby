@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from backend.os_info import get_disk_usage_info, get_macos_version_info, get_memory_usage_info, get_uptime_info
 from backend.personal_info import get_greeting_based_on_daytime, get_location_from_ip_address
 from backend.weather_data import WeatherResponse, get_weather_data
@@ -6,6 +7,15 @@ from typing import Any
 
 
 api = FastAPI()
+
+api.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173",],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 # Personal Info Endpoints
 @api.get("/greeting")
