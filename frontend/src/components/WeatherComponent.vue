@@ -59,6 +59,7 @@
 <style scoped>
   .weather-component-container {
     background-color: rgba(106, 106, 106, 0.5);
+    backdrop-filter: blur(5px) grayscale(100%);
     border-radius: 25px;
     display: flex;
     flex-direction: column;
@@ -66,7 +67,7 @@
     margin: 4vh 2vw;
     align-items: center;
     width: 20vw;
-    height: 60vh;
+    height: fit-content;
     font-size: 2vh;
   }
 
@@ -77,7 +78,7 @@
   }
 
   #current-temperature {
-    margin: 5% 0;
+    margin: 2vh 0;
     font-size: 5vh;
   }
 
@@ -85,12 +86,17 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin: 0;
     width: 100%;
-    height: 5%;
+    height: fit-content;
+
+    p {
+      margin: 0;
+    }
   }
 
   .weather-list-items-separate {
-    padding-top: 10%;
+    padding-top: 5vh;
   }
 
   .weather-list-item-names {
@@ -109,6 +115,7 @@
   }
 
   #location {
+    margin: 0;
     text-align: end;
     width: 100%;
     font-weight: 300;
