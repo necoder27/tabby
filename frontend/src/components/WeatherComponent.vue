@@ -1,12 +1,12 @@
 <template>
   <div class="weather-component-container">
-    <p id="weather-code-text">{{ weather?.weather_code }}</p>
-    <p id="current-temperature">{{ weather?.temperature_2m }}°C</p>
+    <p id="weather-code-text">{{ weather?.weather_code_text }}</p>
+    <p id="current-temperature">{{ weather?.current_temperature[0] }}{{ weather?.current_temperature[1] }}</p>
     <div class="weather-list-items" v-for="[name, value] in filtered_weather" :key="name">
       <p class="weather-list-item-names">{{ name }}:</p>
       <div class="weather-list-item-values">
-        <p>{{ value[0] }}</p>
-        <p>{{ value[1] }}</p>
+        <p>{{ Array.isArray(value) ? value[0] : value }}</p>
+        <p>{{ Array.isArray(value) ? value[1] : "" }}</p>
       </div>
     </div>
     <p id="location">{{ location }}</p>
@@ -18,15 +18,15 @@
   import apiClient from "@/api";
 
   interface WeatherResponse {
-    weather_code: string,
-    temperature_2m: number,
-    apparent_temperature: number,
-    wind_speed_10m: number,
-    precipitation_probability: number,
-    precipitation: number,
+    weather_code_text: string,
+    current_temperature: [number, string],
+    apparent_temp: [number, string],
+    wind_speed_10m: [number, string],
+    precipitation_probability: [number, string],
+    precipitation: [number, string],
     uv_index_max: number,
-    sunrise: string,
-    sunset: string
+    sunrise: [string, string],
+    sunset: [string, string]
   }
 
   const weather = ref<WeatherResponse>();

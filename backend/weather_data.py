@@ -1,6 +1,7 @@
 from typing import TypedDict, Literal, Any
 import geocoder
 import requests
+from datetime import datetime as dt 
 
 
 URL = "https://api.open-meteo.com/v1/forecast"
@@ -68,16 +69,22 @@ class WeatherResponse(TypedDict):
 
 
 def filter_weather_data(data: WeatherResponse) -> dict[str, Any]:
+    sunrise = data["daily"]["sunrise"][0].split("T")[1]
+    sunset = data["daily"]["sunset"][0].split("T")[1]
+
+    sunrise = [sunrise, "am" if (int(sunrise.split(":")[0]) < 12) else "pm"]
+    sunset = [sunset, "am" if (int(sunset.split(":")[0]) < 12) else "pm"]
+
     filtered_weather_data = {
         "weather_code_text": WMO_WEATHER_CODES[data["current"]["weather_code"]],
         "current_temperature": [data["current"]["temperature_2m"], data["current_units"]["temperature_2m"]],
-        "apparent_temperature": [data["current"]["apparent_temperature"], data["current_units"]["apparent_temperature"]],
+        "apparent_temp": [data["current"]["apparent_temperature"], data["current_units"]["apparent_temperature"]],
         "wind_speed": [data["current"]["wind_speed_10m"], data["current_units"]["wind_speed_10m"]],
         "precipitation_prob": [data["current"]["precipitation_probability"], data["current_units"]["precipitation_probability"]],
         "precipitation": [data["current"]["precipitation"], data["current_units"]["precipitation"]],
-        "uv_index_max": data["daily"]["uv_index_max"][0],
-        "sunrise": data["daily"]["sunrise"][0],
-        "sunset": data["daily"]["sunset"][0],
+        "uv_index_max": data["daily"]["uv_index_max"][0], 
+        "sunrise": sunrise, 
+        "sunset": sunset,
     }
 
     return filtered_weather_data 
