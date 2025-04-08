@@ -2,7 +2,7 @@
   <div class="weather-component-container">
     <p id="weather-code-text">{{ weather?.weather_code_text }}</p>
     <p id="current-temperature">{{ weather?.current_temperature[0] }}{{ weather?.current_temperature[1] }}</p>
-    <div class="weather-list-items" v-for="[name, value] in filtered_weather" :key="name">
+    <div :class="[(['uv_index_max', 'sunrise'].includes(name)) ? 'weather-list-items weather-list-items-separate' : 'weather-list-items']" v-for="[name, value] in filtered_weather" :key="name">
       <p class="weather-list-item-names">{{ name }}:</p>
       <div class="weather-list-item-values">
         <p>{{ Array.isArray(value) ? value[0] : value }}</p>
@@ -63,18 +63,22 @@
     display: flex;
     flex-direction: column;
     padding: 2vh 2vw;
+    margin: 4vh 2vw;
     align-items: center;
     width: 20vw;
+    height: 60vh;
+    font-size: 2vh;
   }
 
   #weather-code-text {
-    font-weight: 700;
+    margin: 0;
+    font-weight: 300;
     font-size: x-large;
   }
 
   #current-temperature {
-    font-weight: 900;
-    font-size: xx-large;
+    margin: 5% 0;
+    font-size: 5vh;
   }
 
   .weather-list-items {
@@ -82,10 +86,15 @@
     flex-direction: row;
     justify-content: space-between;
     width: 100%;
+    height: 5%;
+  }
+
+  .weather-list-items-separate {
+    padding-top: 10%;
   }
 
   .weather-list-item-names {
-    font-weight: 700;
+    font-weight: 300;
   }
 
   .weather-list-item-values {
@@ -93,12 +102,16 @@
     flex-direction: row;
     justify-content: space-between;
     width: 5vw;
+
+    p {
+      font-weight: 100;
+    }
   }
 
   #location {
     text-align: end;
     width: 100%;
-    font-weight: 700;
+    font-weight: 300;
     font-size: x-large;
   }
 </style>
