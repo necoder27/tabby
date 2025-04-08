@@ -58,8 +58,8 @@
 
 <style scoped>
   .weather-component-container {
-    background-color: rgba(106, 106, 106, 0.5);
-    backdrop-filter: blur(5px) grayscale(100%);
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(5px);
     border-radius: 25px;
     display: flex;
     flex-direction: column;
