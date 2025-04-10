@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import BackgroundImage from "@/assets/imgs/cherry-blossoms-1317308.jpg";
 </script>
 
 <template>
   <div id="main-container">
-    <video autoplay loop muted>
-      <source src="@/assets/imgs/cat-sakura-street-pixel-moewalls-com.mp4" type="video/mp4">
-    </video>
+    <img :src="BackgroundImage" alt="">
     <RouterView />
   </div>
 </template>
@@ -17,7 +16,7 @@ import { RouterLink, RouterView } from 'vue-router'
     width: 100vw;
   }
 
-  video {
+  img {
     position: fixed;
     top: 0;
     width: 100%;
