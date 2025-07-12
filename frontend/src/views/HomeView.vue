@@ -20,6 +20,7 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
+    color: light-dark(black, white);
   }
 
   #home-view-row-0 {

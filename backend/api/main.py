@@ -10,7 +10,7 @@ api = FastAPI()
 
 api.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://tabby.dashboard:5173", "http://tabby.dashboard:7777"],
+    allow_origins=["http://localhost:5173", "http://tabby.dashboard:5173", "http://tabby.dashboard:7777", "http://localhost:8888", "http://tabby.dashboard:8888"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -8,7 +8,7 @@
   <array>
     <string>/bin/bash</string>
     <string>-c</string>
-    <string>source /Users/username/path/to/project/tabby/tabby/bin/activate && fastapi run /Users/username/path/to/project/tabby/backend/api/main.py</string>
+    <string>cd /Users/username/path/to/project/tabby && source tabby/bin/activate && uvicorn backend.api.main:api --host 0.0.0.0 --port 8888</string>
   </array>
   <key>KeepAlive</key>
   <true/>
